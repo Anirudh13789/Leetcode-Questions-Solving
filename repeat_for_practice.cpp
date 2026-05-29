@@ -3,6 +3,16 @@
 #include <algorithm>
 #include <stack>
 using namespace std;
+
+class ListNode{
+public:
+    ListNode*next;
+    int val;
+    ListNode(int d){
+        val=d;
+        next=NULL;
+    }
+};
 // code-1
 class Solution {
 public:
@@ -237,5 +247,69 @@ public:
             }
         }
         return s.empty();
+    }
+};
+//code-10
+class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        if(list1==nullptr){
+            return list2;
+        }
+        if(list2==nullptr){
+            return list1;
+        }
+        if(list1->val <= list2->val){
+            ListNode*nh=list1;
+            nh->next=mergeTwoLists(list1->next,list2);
+            return nh;
+        }
+        if(list1->val >= list2->val){
+            ListNode*nh=list2;
+            nh->next=mergeTwoLists(list1,list2->next);
+            return nh;
+        }
+        return {};
+    }
+};
+//code-11
+class Solution {
+public:
+    int searchInsert(vector<int>& nums, int target) {
+        int start=0;
+        int end=nums.size()-1;
+        
+
+        while(start<=end){
+            int mid=(start+end)/2;
+            if(nums[mid]==target){
+                return mid;
+            }
+            else if(nums[mid]<target){
+                start=mid+1;
+            }
+            else{
+                end=mid-1;
+            }
+        }
+        return start;
+    }
+};
+//code-12
+class Solution {
+public:
+    int lengthOfLastWord(string s) {
+        int i=s.length()-1;
+        int count=0;
+
+        //if string contains space at last
+        while(i>=0 and s[i]==' '){
+            i--;
+        }
+        while(i>=0 and s[i]!=' '){
+            count++;
+            i--;
+        }
+        return count;
     }
 };
