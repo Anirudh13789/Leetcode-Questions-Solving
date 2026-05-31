@@ -313,3 +313,162 @@ public:
         return count;
     }
 };
+
+//code-13
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+        int k=0;
+        for(int i=0;i<nums.size();i++){
+            if(nums[i]!=val){
+                nums[k]=nums[i];
+                k++;
+            }
+        }
+        return k;
+    }
+};
+
+//code-14
+class Solution {
+public:
+    int mySqrt(int x) {
+        long long r=x;
+        while(r*r>x){
+            r=(r+x/r)/2;
+        }
+        return r;   
+    }
+};
+
+//code-15
+class Solution {
+public:
+    vector<int> runningSum(vector<int>& nums) {
+        for(int i=1;i<nums.size();i++){
+            nums[i]=nums[i]+nums[i-1];
+        }
+        return nums;
+    }
+};
+
+//code-16
+class Solution {
+public:
+    int pivotIndex(vector<int>& nums) {
+        int totalsum=0;
+        for(int i=0;i<nums.size();i++){
+            totalsum=totalsum+nums[i];
+        }
+        int leftsum=0;
+        for(int i=0;i<nums.size();i++){     
+            
+            if(leftsum==totalsum-leftsum-nums[i]){
+                return i;
+            }
+            leftsum=leftsum+nums[i];
+        }
+        return -1;
+    }
+};
+
+//code-17
+class Solution {
+public:
+    vector<int> buildArray(vector<int>& nums) {
+        int n=nums.size();
+        vector<int> ans(n);
+        for(int i=0;i<nums.size();i++){
+            ans[i]=nums[nums[i]];
+        }
+        return ans;
+    }
+};
+
+//code-18
+class Solution {
+public:
+    bool containsDuplicate(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
+        for(int i=1;i<nums.size();i++){
+            if(nums[i]==nums[i-1]){
+                return true;
+            }
+        }
+        return false;
+    }
+};
+
+//code-19
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+        int n=nums.size();
+        int expectedSum=(n*(n+1))/2;
+        int actualsum=0;
+        for(int i=0;i<n;i++){
+            actualsum+=nums[i];
+        }
+        return expectedSum-actualsum;
+    }
+};
+
+//code-20
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        int ans=0;
+        for(int i=0;i<nums.size();i++){
+            ans=ans^nums[i];
+        }
+        return ans;
+    }
+};
+
+//code-21
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int minprice=prices[0];
+        int maxprofit=0;
+        for(int i=1;i<prices.size();i++){
+            minprice=min(minprice,prices[i]);
+            maxprofit=max(maxprofit,prices[i]-minprice);
+        }
+        return maxprofit;
+    }
+};
+
+//code-22
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        int n=nums.size();
+        for(int i=0;i<nums.size();i++){
+            int count=1;
+            for(int j=i+1;j<nums.size();j++){
+                if(nums[j]==nums[i]){
+                    count++;
+                }
+            }
+            if(count>n/2){
+                return nums[i];
+            }
+        }
+        return{};
+    }
+};
+
+//code-23
+class Solution {
+public:
+    void moveZeroes(vector<int>& nums) {
+        int j=0;
+        for(int i=0;i<nums.size();i++){
+            if(nums[i]!=0){
+                swap(nums[i],nums[j]);
+                j++;
+            }
+        }
+    }
+};
