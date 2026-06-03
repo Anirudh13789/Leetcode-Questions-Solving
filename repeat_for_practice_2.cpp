@@ -1,6 +1,7 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
+#include <climits>
 using namespace std;
 class Solution {
 public:
@@ -77,5 +78,110 @@ public:
             }
         }
         return totalTank>=0? start:-1;
+    }
+};
+
+class Solution {
+public:
+    bool isPalindrome(string s) {
+        int start=0;
+        int end=s.length()-1;
+        while(start<=end){
+            if(!isalnum(s[start])){
+                start++;
+                continue;
+            }
+            if(!isalnum(s[end])){
+                end--;
+                continue;
+            }
+            if(tolower(s[start])!=tolower(s[end])){
+                return false;
+            }
+            else{
+                start++;
+                end--;
+            }
+        }
+        return true;
+
+    }
+};
+
+class Solution {
+public:
+    bool isSubsequence(string s, string t) {
+        int i=0,j=0;
+        while(i<=s.length()-1 && j<=t.length()-1){
+            if(s[i]==t[j]){
+                i++;
+            }
+            j++;
+        }
+        return i==s.length();
+
+    }
+};
+
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& numbers, int target) {
+        int left=0;
+        int right=numbers.size()-1;
+        while(left<right){
+            int total=numbers[left]+numbers[right];
+            if(total==target){
+                return{left+1,right+1};
+            }
+            else if(total<target){
+                left++;
+            }
+            else{
+                right--;
+            }
+        }
+        return{};
+    }
+};
+
+class Solution {
+public:
+    int maxArea(vector<int>& heights) {
+        int left=0;
+        int right=heights.size()-1;
+        int maxwater=0;
+        while(left<right){
+            int width=right-left;
+            int height=min(heights[right],heights[left]);
+            int currentwater=width*height;
+
+            maxwater=max(maxwater,currentwater);
+
+            if(heights[left]<heights[right]){
+                left++;
+            }
+            else{
+                right--;
+            }
+        }
+        return maxwater;
+    }
+};
+
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int left=0;
+        int sum=0;
+        int minLen=INT_MAX;
+        for(int right=0;right<nums.size();right++){
+            sum+=nums[right];
+            while(sum>=target){
+                minLen=min(minLen,right-left+1);
+                sum-=nums[left];
+                left++;
+            }
+        }
+        return (minLen==INT_MAX) ? 0:minLen;
     }
 };
