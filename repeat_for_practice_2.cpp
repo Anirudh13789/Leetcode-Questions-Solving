@@ -186,3 +186,75 @@ public:
         return (minLen==INT_MAX) ? 0:minLen;
     }
 };
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        vector<int> arr(256,-1);
+        int left=0, ans=0;
+        for(int right=0;right<s.length();right++){
+            left=max(left,arr[s[right]]+1);
+            arr[s[right]]=right;
+            ans=max(ans,right-left+1);
+        }
+        return ans;
+    }
+};
+
+class Solution {
+public:
+    void sortColors(vector<int>& nums) {
+        int c=0;
+        int z=0;
+        int t=nums.size()-1;
+        while(c<=t){
+            if(nums[c]==0){
+                swap(nums[c],nums[z]);
+                c++;
+                z++;
+            }
+            else if(nums[c]==1){
+                c++;
+            }
+            else{
+                swap(nums[c],nums[t]);
+                t--; 
+            }
+        }
+    }
+};
+class Solution {
+public:
+    int numSubarrayProductLessThanK(vector<int>& nums, int k) {
+        if(k<=1){
+            return 0;
+        }
+        int product=1;
+        int i=0;
+        int j=0;
+        int ans=0;
+        while(j<nums.size()){
+            product*=nums[j];
+            while(product>=k){
+                product=product/nums[i];
+                i++;
+            }
+            ans=ans+j-i+1;   
+            j++;
+        }
+        return ans;
+    }
+};
+class Solution {
+public:
+    void wiggleSort(vector<int>& nums) {
+        for(int i=1;i<nums.size();i=i+2){
+            if(nums[i-1]>nums[i]){
+                swap(nums[i-1],nums[i]);
+            }
+            if(i+1<nums.size() && nums[i]<nums[i+1]){
+                swap(nums[i],nums[i+1]);
+            }
+        }
+    }
+};
