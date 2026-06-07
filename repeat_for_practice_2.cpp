@@ -258,3 +258,254 @@ public:
         }
     }
 };
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        int m=matrix.size();
+        int n=matrix[0].size();
+        int i=0;
+        int j=n-1;
+        while(i<m && j>=0 ){
+            if(matrix[i][j]==target){
+                return true;
+            }
+            if(target>matrix[i][j]){
+                i++;
+            }
+            else{
+                j--;
+            }
+        }
+        return false;
+    }
+};
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        int ans=0;
+        for(int i=0;i<nums.size();i++){
+            ans=ans^nums[i];
+        }
+        return ans;
+    }
+};
+class Solution {
+public:
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+        int i=m-1;
+        int j=n-1;
+        int k=m+n-1;
+        while(i>=0 and j>=0){
+            if(nums1[i]>nums2[j]){
+                nums1[k]=nums1[i];
+                k--;
+                i--;
+            }
+            else{
+                nums1[k]=nums2[j];
+                k--;
+                j--;
+            }
+        }
+        while(j>=0){
+            nums1[k]=nums2[j];
+            j--;
+            k--;
+        }
+    }
+};
+class Solution {
+public:
+    int removeDuplicates(vector<int>& nums) {
+        if(nums.size()==0){
+            return 0;
+        }
+        int i=0;
+        for(int j=1;j<nums.size();j++){
+            if(nums[i]!=nums[j]){
+                i++;
+                nums[i]=nums[j];
+            }
+        }
+        return i+1;
+    }
+};
+class Solution {
+public:
+    int missingNumber(vector<int>& nums) {
+        int n=nums.size();
+        int expectedsum=n*(n+1)/2;
+        int actualsum=0;
+        for(int i=0;i<n;i++){
+            actualsum+=nums[i];
+        }
+        return expectedsum-actualsum;
+    }
+};
+class Solution {
+public:
+    void moveZeroes(vector<int>& nums) {
+        int i=0;
+        for(int j=0;j<nums.size();j++){
+            if(nums[j]!=0){
+                swap(nums[i],nums[j]);
+                i++;
+            }
+        }
+    }
+};
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        int n=nums.size();
+        int candidate=nums[0];
+        int vote=1;
+        for(int i=1;i<n;i++){
+            if(vote==0){
+                candidate=nums[i];
+                vote=1;
+            }
+            else if(candidate==nums[i]){
+                vote++;
+            }
+            else{
+                vote--;
+            }
+        }
+        return candidate;
+    }
+};
+class Solution {
+public:
+    vector<int> majorityElement(vector<int>& nums) {
+        int n=nums.size();
+        int seat1=0,seat2=0;
+        int vote1=0,vote2=0;
+        int n=nums.size();
+
+        for(int i=0;i<n;i++){
+            int x=nums[i];
+            if(x==seat1){
+                vote1++;
+            }
+            else if(x==seat2){
+                vote2++;
+            }
+            else if(vote1==0){
+                seat1=x;
+                vote1=1;
+            }
+            else if(vote2==0){
+                seat2=x;
+                vote2=1;
+            }
+            else{
+                vote1--;
+                vote2--;
+            }
+        }
+        vote1=0;
+        vote2=0;
+        for(int i=0;i<n;i++){
+            if(nums[i]==seat1){
+                vote1++;
+            }
+            else if(nums[i]==seat2){
+                vote2++;
+            }
+        }
+        vector<int> result;
+        if(vote1>n/3){
+            result.push_back(seat1);
+        }
+        if(vote2>n/3){
+            result.push_back(seat2);
+        }
+        return result;
+        
+    }
+};
+class Solution {
+public:
+    int pivotIndex(vector<int>& nums) {
+        int totalsum=0;
+        for(int i=0;i<nums.size();i++){
+            totalsum=totalsum+nums[i];
+        }
+        int leftsum=0;
+        for(int i=0;i<nums.size();i++){     
+            
+            if(leftsum==totalsum-leftsum-nums[i]){
+                return i;
+            }
+            leftsum=leftsum+nums[i];
+        }
+        return -1;
+    }
+};
+class Solution {
+public:
+    int triangleNumber(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
+        int n=nums.size();
+        int count=0;
+        for(int i=0;i<n;i++){
+            for(int j=i+1;j<n-1;j++){
+                int sum=nums[i]+nums[j];
+
+                int k=lower_bound(nums.begin()+j+1,nums.end(),sum)-nums.begin();
+                count+=k-j-1;
+            }
+        }
+        return count;
+    }
+};
+class Solution {
+public:
+    int maxSubArray(vector<int>& nums) {
+        int mx=nums[0];
+        int sum=nums[0];
+        for(int i=1;i<nums.size();i++){
+            int nE=nums[i];
+            sum=max(sum+nE,nE);
+            mx=max(mx,sum);
+        }
+        return mx;
+    }
+};
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        vector<vector<int>> ans;
+        int n=nums.size();
+        sort(nums.begin(),nums.end());
+        for(int i=0;i<n-2;i++){
+            if(i>0 && nums[i]==nums[i-1]){
+                continue;
+            }
+            int j=i+1;
+            int k=n-1;
+            while(j<k){
+                int sum=nums[i]+nums[j]+nums[k];
+                if(sum==0){
+                    ans.push_back({nums[i],nums[j],nums[k]});
+                    j++;
+                    k--;
+                    while(j<k && nums[j]==nums[j-1]){
+                        j++;
+                    }
+                    while(j<k && nums[k]==nums[k+1]){
+                        k--;
+                    }
+                }
+                else if(sum>0){
+                    k--;
+                }
+                else{
+                    j++;
+                }
+            }
+        }
+        return ans;
+    }
+};
