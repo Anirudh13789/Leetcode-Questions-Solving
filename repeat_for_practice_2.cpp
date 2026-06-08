@@ -509,3 +509,152 @@ public:
         return ans;
     }
 };
+class Solution {
+public:
+    int uniquePaths(int m, int n) {
+        int N = n + m - 2;
+        int r = m - 1;
+        if (r > N - r) {
+            r = N - r;
+        }
+        
+        long long result = 1; 
+        for (int i = 1; i <= r; ++i) {
+            result *= (N - r + i);
+            result /= i;
+        }
+        
+        return result; 
+    }
+};
+class Solution {
+public:
+    int subarraySum(vector<int>& nums, int k) {
+        int cnt=0;
+        int n=nums.size();
+        for(int i=0;i<n;i++){
+            int sum=0;
+            for(int j=i;j<n;j++){
+                sum+=nums[j];
+                if(sum==k){
+                    cnt++;
+                }
+            }
+        }
+        return cnt;
+    }
+};
+class Solution {
+public:
+    vector<int> rearrangeArray(vector<int>& nums) {
+        int n=nums.size();
+        vector<int> ans(n);
+        int pi=0;
+        int ni=1;
+        for(int i=0;i<n;i++){
+            if(nums[i]>0){
+                ans[pi]=nums[i];
+                pi=pi+2;
+            }
+            else{
+                ans[ni]=nums[i];
+                ni=ni+2;
+            }
+        }
+        return ans;
+    }
+};
+class Solution {
+public:
+    int search(vector<int>& nums, int target) {
+        int n=nums.size();
+        int s=0;
+        int e=n-1;
+        while(s<=e){
+            int m=(s+e)/2;
+            if(nums[m]==target){
+                return m;
+            }
+            else{
+                if(nums[m]>=nums[0]){
+                    if(target>=nums[s] and target<nums[m]){
+                        e=m-1;
+                    }
+                    else{
+                        s=m+1;
+                    }
+                }
+                else{
+                    if(target>nums[m] and target<=nums[e]){
+                        s=m+1;
+                    }
+                    else{
+                        e=m-1;
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+};
+class Solution {
+public:
+    vector<int> prevPermOpt1(vector<int>& arr) {
+        int n = arr.size();
+
+        int i = n - 2;
+        while (i >= 0 && arr[i] <= arr[i + 1]) {
+            i--;
+        }
+
+        if (i < 0) return arr;
+
+        int j = n - 1;
+
+        while (arr[j] >= arr[i]) {
+            j--;
+        }
+
+        while (j > 0 && arr[j] == arr[j - 1]) {
+            j--;
+        }
+
+        swap(arr[i], arr[j]);
+
+        return arr;
+    }
+};
+class Solution {
+public:
+    bool isPowerOfTwo(int n) { 
+        if(n<0){
+            return false;
+        }
+        while(n%2==0){
+            n=n/2;
+        }
+        return n==1;
+    }
+};
+class Solution {
+public:
+    int maxSubarraySumCircular(vector<int>& nums) {
+        int currMax=0;
+        int currMin=0;
+        int maxSum=nums[0];
+        int minSum=nums[0];
+        int totalSum=0;
+        for(int i=0;i<nums.size();i++){
+            currMax=max(currMax,0)+nums[i];
+            maxSum=max(maxSum,currMax);
+            currMin=min(currMin,0)+nums[i];
+            minSum=min(minSum,currMin);
+            totalSum+=nums[i];
+        }
+
+        if(totalSum==minSum){
+            return maxSum;
+        }
+        return max(maxSum,totalSum-minSum);
+    }
+};
