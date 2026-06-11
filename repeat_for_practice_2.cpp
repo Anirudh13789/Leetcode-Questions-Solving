@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <vector>
 #include <climits>
+#include <map>
 using namespace std;
 class Solution {
 public:
@@ -21,7 +22,6 @@ public:
 
     }
 };
-
 class Solution {
 public:
     int hIndex(vector<int>& citations) {
@@ -38,7 +38,6 @@ public:
         return 0;
     }
 };
-
 class Solution {
 public:
     vector<int> productExceptSelf(vector<int>& nums) {
@@ -656,5 +655,121 @@ public:
             return maxSum;
         }
         return max(maxSum,totalSum-minSum);
+    }
+};
+class Solution {
+public:
+    vector<int> singleNumber(vector<int>& nums) {
+        int xorr=0;
+        for(int num:nums){
+            xorr=xorr^num;
+        }
+        long long setbit=(long long)xorr & (-(long long)xorr);
+        int x=0,y=0;
+        for(int num:nums){
+            if(num & setbit){
+                x=x^num;
+            }
+            else{
+                y=y^num;
+            }
+        }
+        return {x,y};
+    }
+};
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        int result=0;
+        for(int bit=0;bit<32;bit++){
+            int count=0;
+            for(int num:nums){
+                if(num & (1<<bit)){
+                    count++;
+                }
+            }
+            if(count%3!=0){
+                result |= (1 << bit);
+            }
+        }
+        return result;
+    }
+};
+class Solution {
+public:
+    bool isIsomorphic(string s, string t) {
+        int nl=s.length();
+        int ml=t.length();
+        if(nl!=ml){
+            return false;
+        }
+        map<char,char> m;
+        map<char,char> n;
+        for(int i=0;i<nl;i++){
+            if(m.find(s[i])!=m.end()){
+                if(m[s[i]]!=t[i]){
+                    return false;
+                }
+                continue;
+            }
+            else if(n.find(t[i])!=n.end()){
+                return false;
+            }
+            m[s[i]]=t[i];
+            n[t[i]]=s[i];
+        }
+        return true;
+    }
+};
+class Solution {
+public:
+    void rotate(vector<vector<int>>& matrix) {
+        int n=matrix.size();
+
+        //transpose
+        for(int i=0;i<n;i++){
+            for(int j=0;j<i;j++){
+                swap(matrix[i][j],matrix[j][i]);
+            }
+        }
+        //reverse rows
+        for(int i=0;i<n;i++){
+            int j=0,k=n-1;
+            while(j<k){
+                swap(matrix[i][j],matrix[i][k]);
+                j++;
+                k--;
+            }
+        }
+    }
+};
+class Solution {
+public:
+    bool isSubsequence(string s, string t) {
+        int i=0,j=0;
+        while(i<s.length() and j<t.length()){
+            if(s[i]==t[j]){
+                i++;
+            }
+            j++;
+        }
+        if(i==s.length()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+};
+class Solution {
+public:
+    int largestPerimeter(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
+        for(int i=nums.size()-3;i>=0;--i){
+            if(nums[i]+nums[i+1]>nums[i+2]){
+                return nums[i]+nums[i+1]+nums[i+2];
+            }
+        }
+        return 0;
     }
 };
