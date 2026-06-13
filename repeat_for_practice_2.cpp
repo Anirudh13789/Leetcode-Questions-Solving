@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <vector>
 #include <climits>
+#include <unordered_map>
 #include <map>
 using namespace std;
 class Solution {
@@ -771,5 +772,110 @@ public:
             }
         }
         return 0;
+    }
+};
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int left=0,right=height.size()-1;
+        int ans=0;
+        int left_max=0,right_max=0;
+        while(left<right){
+            if(height[left]<=height[right]){
+                if(height[left]>=left_max){
+                    left_max=height[left];
+                }
+                else{
+                    ans+=left_max-height[left];
+                }
+                left++;
+            }
+            else{
+                if(height[right]>=right_max){
+                    right_max=height[right];
+                }
+                else{
+                    ans+=right_max-height[right];
+                }
+                right--;
+            }
+        }
+        return ans;
+    }
+};
+class Solution {
+public:
+    int maxArea(vector<int>& heights) {
+        int left=0;
+        int right=heights.size()-1;
+        int area=0;
+        while(left<right){
+            int width=right-left;
+            int height=min(heights[left],heights[right]);
+            int currentArea=height*width;
+            area=max(currentArea,area);
+            if(heights[left]<heights[right]){
+                left++;
+            }
+            else{
+                right--;
+            }
+        }
+        return area;
+    }
+};
+class Solution {
+public:
+    int thirdMax(vector<int>& nums) {
+        long long firstMax= INT_MIN;
+        long long secondMax= INT_MIN;
+        long long thirdMax= INT_MIN;
+
+        for(int num:nums){
+            if(num==firstMax || num==secondMax || num==thirdMax){
+                continue;
+            }
+            if(num>firstMax){
+                thirdMax=secondMax;
+                secondMax=firstMax;
+                firstMax=num;
+            }
+            else if(num>secondMax){
+                thirdMax=secondMax;
+                secondMax=num;
+            }
+            else if(num>thirdMax){
+                thirdMax=num;
+            }
+        }
+        return thirdMax;
+    }
+};
+class Solution {
+public:
+    void rotate(vector<int>& nums, int k) {
+        int n=nums.size();
+        k%=n;
+        reverse(nums.begin(),nums.end());
+        reverse(nums.begin(),nums.begin()+k);
+        reverse(nums.begin()+k,nums.end());
+    }
+};
+class Solution {
+public:
+    int findMaxLength(vector<int>& nums) {
+        unordered_map<int,int> h;
+        h[0]=-1;
+        int sum=0,ans=0;
+        for(int i=0;i<nums.size();i++){
+            sum+=(nums[i]==1)?1:-1;
+            if(h.find(sum)!=h.end()){
+                ans=max(ans,i-h[sum]);
+            }
+            else{
+                h[sum]=i;
+            }
+        }
+        return ans;
     }
 };
