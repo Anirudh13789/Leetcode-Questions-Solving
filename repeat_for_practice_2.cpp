@@ -879,3 +879,248 @@ public:
         return ans;
     }
 };
+class Solution {
+public:
+    bool canPlaceFlowers(vector<int>& flowerbed, int t) {
+        int count=0;
+        int n=flowerbed.size();
+        for(int i=0;i<n;i++){
+            if(flowerbed[i]==0){
+                bool emptyLeft=(i==0) || (flowerbed[i-1]==0);
+                bool emptyRight=(i==n-1)|| (flowerbed[i+1]==0);
+
+                if(emptyLeft && emptyRight){
+                    flowerbed[i]=1;
+                    count++;
+                }
+            }
+        }
+        return count>=t;
+    }
+};
+class Solution {
+public:
+    int maxChunksToSorted(vector<int>& arr) {
+        int n=arr.size();
+        int chunks=0,mx=0;
+        for(int i=0;i<n;i++){
+            mx=max(arr[i],mx);
+            if(mx==i){
+                chunks++;
+            }
+        }
+        return chunks;
+    }
+};
+class Solution {
+public:
+    int arrayNesting(vector<int>& nums) {
+        int ans=0;
+        for(int i=0;i<nums.size();i++){
+            if(nums[i]!=1e9){
+                int start=nums[i],count=0;
+                while(nums[start]!=1e9){
+                    int temp=start;
+                    start=nums[start];
+                    count++;
+                    nums[temp]=1e9;
+                }
+                ans=max(ans,count);
+            }
+        }
+        return ans;
+    }
+};
+class Solution {
+public:
+    int minIncrementForUnique(vector<int>& nums) {
+        int n=nums.size();
+        int max_val=0;
+        int minIncrements=0;
+
+        for(int val:nums){
+            max_val=max(max_val,val);
+        }
+        vector<int> frequencyCount(n+max_val,0);
+
+        for(int val:nums){
+            frequencyCount[val]++;
+        }
+        for(int i=0;i<frequencyCount.size();i++){
+            if(frequencyCount[i]<=1){
+                continue;
+            }
+            int duplicates=frequencyCount[i]-1;
+            frequencyCount[i+1]+=duplicates;
+            frequencyCount[i]=1;
+            minIncrements+=duplicates;
+        }
+        return minIncrements;
+
+    }
+};
+class Solution {
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        sort(nums.begin(),nums.end());
+        return nums[nums.size()-1-k];
+    }
+};
+class Solution {
+public:
+    int partitionDisjoint(vector<int>& nums) {
+        int n=nums.size();
+        int ans=1;
+        int leftMaxSoFar=nums[0];
+        int maxSoFar=nums[0];
+        for(int i=1;i<n;i++){
+            maxSoFar=max(maxSoFar,nums[i]);
+            if(nums[i]<leftMaxSoFar){
+                ans=i+1;
+                leftMaxSoFar=maxSoFar;
+            }
+        }
+        return ans;
+    }
+};
+class Solution {
+public:
+    vector<vector<int>> matrixReshape(vector<vector<int>>& mat, int r, int c) {
+        int n=mat.size(),m=mat[0].size();
+        if(n*m != r*c){
+            return mat;
+        }
+
+        vector<vector<int>>ans (r,vector<int>(c));
+
+        int x=0,y=0;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                ans[x][y]=mat[i][j];
+                y++;
+                if(y==c){
+                    y=0;
+                    x++;
+                }
+            }
+        }
+        return ans;
+    }
+};
+class Solution {
+public:
+    vector<vector<int>> generate(int numRows) {
+        vector<vector<int>> result;
+        vector<int> prevRow;
+        
+        for (int i = 0; i < numRows; i++) {
+            vector<int> currentRow(i + 1, 1);
+            
+            for (int j = 1; j < i; j++) {
+                currentRow[j] = prevRow[j - 1] + prevRow[j];
+            }
+            
+            result.push_back(currentRow);
+            prevRow = currentRow;
+        }
+        
+        return result;
+    }
+};
+class Solution {
+public:
+    bool isStrictlyPalindromic(int n) {
+        return false;
+    }
+};
+class Solution {
+public:
+    int climbStairs(int n, vector<int>& costs) {
+        if(n==0){
+            return 1;
+        }
+        if(n<0){
+            return 0;
+        }
+        int ans=0;
+        for(int i=0;i<costs.size();i++){
+            ans+=climbStairs(n-costs[i],costs);
+        }
+        return ans;
+    }
+};
+class Solution {
+public:
+    bool stoneGame(vector<int>& piles) {
+        return true;
+    }
+};
+class Solution {
+public:
+    int subarraysDivByK(vector<int>& nums, int k) {
+        int n=nums.size();
+        int ps[100]={0};
+
+        ps[0]=nums[0];
+        for(int i=1;i<n;i++){
+            ps[i]=ps[i-1]+nums[i];
+        }
+        for(int i=0;i<n;i++){
+            ps[i]%=n;
+        }
+        int remaindersCount[100]={1};
+        for(int i=0;i<n;i++){
+            remaindersCount[ps[i]]++;
+        }
+        int ans=0;
+        for(int i=0;i<n;i++){
+            ans+=(remaindersCount[i]+(remaindersCount[i]-1)/2);
+        }
+        return ans;
+    }
+};
+class Solution {
+public:
+    int minPathSum(vector<vector<int>>& grid) {
+        int m=grid.size();
+        int n=grid[0].size();
+        vector<vector<int>>cost(m,vector<int>(n,0));
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(i==0 && j==0){
+                    cost[i][j]=grid[i][j];
+                }
+                else{
+                    int up=(i>0)? cost[i-1][j]:INT_MAX;
+                    int left=(j>0)? cost[i][j-1]:INT_MAX;
+
+                    cost[i][j]=grid[i][j]+min(up,left);
+                }
+            }
+        }
+        return cost[m-1][n-1];
+    }
+};
+class Solution {
+public:
+    int totalFruit(vector<int>& fruits) {
+        unordered_map<int,int> basket;
+        int left=0,maxPicked=0;
+
+        for(int right=0;right<fruits.size();right++){
+            basket[fruits[right]]++;
+
+            while(basket.size()>2){
+                basket[fruits[left]]--;
+                if(basket[fruits[left]]==0){
+                    basket.erase(fruits[left]);
+                   
+                }
+                left++;
+            }
+            maxPicked=max(maxPicked,right-left+1);
+        }
+        return maxPicked;
+    }
+
+};
