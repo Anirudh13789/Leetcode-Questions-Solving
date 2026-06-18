@@ -4,6 +4,8 @@
 #include <climits>
 #include <unordered_map>
 #include <map>
+#include <numeric>
+#include <stack>
 using namespace std;
 class Solution {
 public:
@@ -1123,4 +1125,112 @@ public:
         return maxPicked;
     }
 
+};
+class Solution {
+public:
+    int findUnsortedSubarray(vector<int>& nums) {
+        int n=nums.size();
+        int mi=INT_MAX, mx=INT_MIN;
+        bool flag= false;
+
+        for(int i=1;i<n;i++){
+            if(nums[i]<nums[i-1]){
+                flag=true;
+            }
+            if(flag){
+                mi=min(mi,nums[i]);
+            }
+        }
+        flag=false;
+
+        for(int i=n-2;i>=0;i--){
+            if(nums[i]>nums[i+1]){
+                flag=true;
+            }
+            if(flag){
+                mx=max(mx,nums[i]);
+            }
+        }
+
+        int l,r;
+        for(l=0;l<n;l++){
+            if(nums[l]>mi){
+                break;
+            }
+        }
+        for(r=n-1;r>=0;r--){
+            if(nums[r]<mx){
+                break;
+            }
+        }
+        return r-l<0 ? 0 : r-l+1;
+    }
+};
+class Solution {
+public:
+    vector<int> fairCandySwap(vector<int>& aliceSizes, vector<int>& bobSizes) {
+        int sum_a=0,sum_b=0;
+        for(int i=0;i<aliceSizes.size();i++){
+            sum_a+=aliceSizes[i];
+        }
+        for(int j=0;j<bobSizes.size();j++){
+            sum_b+=bobSizes[j];
+        }
+        int d=(sum_a-sum_b)/2;
+
+        sort(aliceSizes.begin(),aliceSizes.end());
+        sort(bobSizes.begin(),bobSizes.end());
+
+        int i=0,j=0;
+        while(i<aliceSizes.size() && j<bobSizes.size()){
+            int diff=aliceSizes[i]-bobSizes[j];
+            if(d==diff){
+                return{aliceSizes[i],bobSizes[j]};
+            }
+            if(diff<d){
+                i++;
+            }
+            else{
+                j++;
+            }
+        }
+        return {-1,-1};
+        
+    }
+};
+class Solution {
+public:
+    int numEquivDominoPairs(vector<vector<int>>& dominoes) {
+        vector<int> num(100);
+        int ret=0;
+        for(auto & it: dominoes){
+            int val=it[0]<it[1]?it[0]*10+it[1]:it[1]*10+it[0];
+            ret+=num[val];
+            num[val]++;
+        }
+        return ret;
+    }
+};
+class Solution {
+public:
+    int maxWidthRamp(vector<int>& nums) {
+        int n = nums.size();
+        stack<int> s;
+        for (int i = 0; i < n; ++i) {
+            if (s.empty() || nums[s.top()] > nums[i]) {
+                s.push(i);
+            }
+        }
+        
+        int maxWidth = 0;
+        
+        for (int j = n - 1; j >= 0; --j) {
+            while (!s.empty() && nums[s.top()] <= nums[j]) {
+                maxWidth = max(maxWidth, j - s.top());
+                s.pop();
+            }
+        }
+        
+        return maxWidth;
+    }
 };
