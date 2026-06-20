@@ -6,6 +6,7 @@
 #include <map>
 #include <numeric>
 #include <stack>
+#include <queue>
 using namespace std;
 class Solution {
 public:
@@ -1234,3 +1235,329 @@ public:
         return maxWidth;
     }
 };
+class Solution {
+public:
+    int firstMissingPositive(vector<int>& nums) {
+        int n=nums.size();
+        int i=0;
+        while(i<n){
+            if(nums[i]>0 && nums[i]<=n and nums[i]!=nums[nums[i]-1]){
+                swap(nums[i],nums[nums[i]-1]);
+            }
+            else{
+                i++;
+            }
+        }
+        for(int i=0;i<n;i++){
+            if(nums[i]!=i+1){
+                return i+1;
+            }
+        }
+        return n+1;
+    }
+};
+class Solution {
+public:
+    bool checkStraightLine(vector<vector<int>>& coordinates) {
+        int x1=coordinates[0][0];
+        int y1=coordinates[0][1];
+        int x2=coordinates[1][0];
+        int y2=coordinates[1][1];
+
+        int deltaY=y2-y1;
+        int deltaX=x2-x1;
+
+        for(int i=2;i<coordinates.size();i++){
+            int x3=coordinates[i][0];
+            int y3=coordinates[i][1];
+
+            if(deltaY*(x3-x2)!=deltaX*(y3-y2)){
+                return false;
+            }
+        }
+        return true;
+    }
+};
+class Solution {
+public:
+    int findPoisonedDuration(vector<int>& timeSeries, int duration) {
+        int n=timeSeries.size();
+        int ans=0;
+        for(int i=0;i<n-1;i++){
+            ans+=min(timeSeries[i+1]-timeSeries[i],duration);
+        }
+        return ans+duration;
+    }
+};
+class Solution {
+public:
+    vector<int> deckRevealedIncreasing(vector<int>& deck) {
+        queue <int> q;
+        int n=deck.size();
+
+        for(int i=0;i<n;i++){
+            q.push(i);
+        }
+        sort(deck.begin(),deck.end());
+
+        vector<int> result(n);
+        for(int i=0;i<n;i++){
+            result[q.front()]=deck[i];
+            q.pop();
+
+            if(!q.empty()){
+                q.push(q.front());
+                q.pop();
+            }
+        }
+        return result;
+    }
+};
+class Solution {
+public:
+    string decodeString(string s) {
+        stack<int> countStack;
+        stack<string> stringStack;
+        
+        string curr = "";
+        int num = 0;
+        
+        for (char ch : s) {
+            if (isdigit(ch)) {
+                num = num * 10 + (ch - '0');
+            }
+            else if (ch == '[') {
+                countStack.push(num);
+                stringStack.push(curr);
+                num = 0;
+                curr = "";
+            }
+            else if (ch == ']') {
+                int times = countStack.top();
+                countStack.pop();
+                
+                string prev = stringStack.top();
+                stringStack.pop();
+                
+                while (times--) {
+                    prev += curr;
+                }
+                curr = prev;
+            }
+            else {
+                curr += ch;
+            }
+        }
+        
+        return curr;
+    }
+};
+class Solution {
+public:
+    string removeKdigits(string num, int k) {
+        stack<char> st;
+        for(char digit:num){
+            while(!st.empty() && k>0 && st.top()>digit){
+                st.pop();
+                k--;
+            }
+            st.push(digit);
+        }
+
+        while(k>0 && !st.empty()){
+            st.pop();
+            k--;
+        }
+        string result="";
+        while(!st.empty()){
+            result+=st.top();
+            st.pop();
+        }
+        reverse(result.begin(),result.end());
+
+        int i=0;
+        while(i<result.size() && result[i]=='0'){
+            i++;
+        }
+        result=result.substr(i);
+
+        if(result.empty()){
+            return 0;
+        }
+        return result;
+    }
+};
+class Solution {
+public:
+    bool find132pattern(vector<int>& nums) {
+        stack <int> st;
+        int C=INT_MIN;
+        int n=nums.size();
+        for(int i=n-1;i>=0;i--){
+            if(nums[i]<C){
+                return true;
+            }
+            while(!st.empty() && st.top()<nums[i]){
+                C=st.top();
+                st.pop();
+            }
+            st.push(nums[i]);
+        }
+        return false;
+    }
+};
+class Solution {
+public:
+    int scoreOfParentheses(string s) {
+        int ans=0,bal=0;
+        for(int i=0;i<s.length();i++){
+            if(s[i]=='('){
+                bal++;
+            }
+            else{
+                bal--;
+                if(s[i-1]=='('){
+                    ans+=1 << bal;
+                }
+            }
+        }
+        return ans;
+    }
+};
+class Pair{
+public:
+    int value;
+    int span;
+};
+class StockSpanner {
+public:
+    stack<Pair> s;
+    StockSpanner() {
+        
+    }
+    
+    int next(int price) {
+        int cspan=1;
+        while(!s.empty() and s.top().value<=price){
+            cspan+=s.top().span;
+            s.pop();
+        }
+        s.push({price,cspan});
+        return cspan;
+    }
+};
+class Solution {
+public:
+    bool validateStackSequences(vector<int>& pushed, vector<int>& popped) {
+       int n=pushed.size();
+       stack<int> st;
+       
+       int j=0;
+       for(int x:pushed){
+            st.push(x);
+
+            while(!st.empty() && j<n && st.top()==popped[j]){
+                st.pop();
+                j++;
+            }
+        }
+        return j==n;
+    }
+};
+class Solution {
+public:
+    vector<int> dailyTemperatures(vector<int>& temperatures) {
+        int n=temperatures.size();
+        vector<int> ans(n,0);
+        stack<int> st;
+
+        for(int i=0;i<n;i++){
+            while(!st.empty() && temperatures[st.top()]<temperatures[i]){
+                ans[st.top()]=i-st.top();
+                st.pop();
+            }
+            st.push(i);
+        }
+        return ans;
+    }
+};
+class FreqStack {
+    unordered_map<int,int> freq;
+    unordered_map<int,stack<int>> group;
+    int maxFreq;
+public:
+    FreqStack() {
+        maxFreq=0;
+    }
+    
+    void push(int x) {
+        int f= ++freq[x];
+        maxFreq=max(f,maxFreq);
+
+        group[f].push(x);
+    }
+    
+    int pop() {
+        int x=group[maxFreq].top();
+        group[maxFreq].pop();
+
+        freq[x]--;
+
+        if(group[maxFreq].empty()){
+            maxFreq--;
+        }
+        return x;
+    }
+};
+class Solution {
+public:
+    int evalRPN(vector<string>& tokens) {
+        stack<int> st;
+        string operators="+-*/";
+        for(string token:tokens){
+            if(operators.find(token)==string::npos){
+                st.push(stoi(token));
+                continue;
+            }
+            int number2=st.top();
+            st.pop();
+            int number1=st.top();
+            st.pop();
+            int result=0;
+            if(token=="+"){
+                result=number1+number2;
+            }
+            else if(token == "-"){
+                result=number1-number2;
+            }
+            else if(token == "*"){
+                result=number1*number2;
+            }
+            else{
+                result=number1/number2;
+            }
+            st.push(result);
+        }
+        return st.top();
+    }
+};
+class Solution {
+public:
+    bool isUgly(int n) {
+        if(n<=0){
+            return false;
+        }
+        int factors[3]={2,3,5};
+        for(int i=0;i<3;i++){
+            n=keepDividingWhenDivisible(n,factors[i]);
+        }
+        return n==1;
+    }
+    int keepDividingWhenDivisible(int dividend,int divisor){
+        while(dividend%divisor==0){
+            dividend/=divisor;
+        }
+        return dividend;
+    }
+};
+
