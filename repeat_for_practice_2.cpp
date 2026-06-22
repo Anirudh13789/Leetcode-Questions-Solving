@@ -7,6 +7,8 @@
 #include <numeric>
 #include <stack>
 #include <queue>
+#include <set>
+#include <cmath>
 using namespace std;
 class Solution {
 public:
@@ -1558,6 +1560,68 @@ public:
             dividend/=divisor;
         }
         return dividend;
+    }
+};
+class Solution {
+public:
+    vector<int> grayCode(int n) {
+        vector<int> result;
+        int total=1<<n;
+        for(int i=0;i<total;i++){
+            result.push_back(i^(i>>1));
+        }
+        return result;
+    }
+};
+class Solution {
+public:
+    int nthUglyNumber(int n) {
+        set <long> s;
+        s.insert(1);
+        long current=1;
+        for(int i=0;i<n;i++){
+            current= *s.begin();
+            s.erase(s.begin());
+
+            s.insert(current*2);
+            s.insert(current*3);
+            s.insert(current*5);
+        }
+        return current;
+    }
+};
+class Solution {
+public:
+    int numTrees(int n) {
+       long long result=1;
+       for(int i=0;i<n;i++){
+            result=result*2*(2*i+1)/(i+2);
+       } 
+       return (int) result;
+    }
+};
+class Solution {
+public:
+    int numSquares(int n) {
+        int sqrtN=sqrt(n);
+        if(sqrtN*sqrtN==n){
+            return 1;
+        }
+        for(int i=1;i*i<=n;i++){
+            int square=i*i;
+            int base=sqrt(n-square);
+
+            if(base*base==n-square){
+                return 2;
+            }
+        }
+        while(n%4==0){
+            n=n/4;
+        }
+        if(n%8!=7){
+            return 3;
+        }
+        return 4;
     }
 };
 
