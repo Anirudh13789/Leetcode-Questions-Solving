@@ -9,6 +9,15 @@
 #include <queue>
 #include <set>
 #include <cmath>
+class ListNode{
+public:
+    ListNode*next;
+    int val;
+    ListNode(int d){
+        val=d;
+        next=NULL;
+    }
+};
 using namespace std;
 class Solution {
 public:
@@ -1622,6 +1631,133 @@ public:
             return 3;
         }
         return 4;
+    }
+};
+class Solution {
+public:
+    ListNode* oddEvenList(ListNode* head) {
+        ListNode* oh=NULL,*ot=NULL,*eh=NULL,*et=NULL;
+        int i=0;
+        while(head){
+            ListNode* curr=head;
+            head=head->next;
+            curr->next=NULL;
+
+            if(i%2==0){
+                if(!eh){
+                    eh=et=curr;
+                }
+                else{
+                    et->next=curr;
+                    et=curr;
+                }
+            }
+            else{
+                if(!oh){
+                    oh=ot=curr;
+                }
+                else{
+                    ot->next=curr;
+                    ot=curr;
+                }
+            }
+            i++;
+        }
+        if(et){
+            et->next=oh;
+        }
+        return eh;
+    }
+};
+class Solution {
+public:
+    ListNode* reverse(ListNode* head) {
+        ListNode* prev = nullptr;
+        ListNode* curr = head;
+
+        while (curr) {
+            ListNode* next = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+        }
+
+        return prev;
+    }
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        l1=reverse(l1);
+        l2=reverse(l2);
+        ListNode*l = NULL;
+        int c=0;
+
+        while(l1 != NULL || l2 != NULL || c != 0){
+            int d1=l1!=NULL ? l1->val :0;
+            int d2=l2!=NULL ? l2->val :0;
+            int s=d1+d2+c;
+            ListNode*n = new ListNode(s%10);
+            n->next=l;
+            l=n;
+            c=s/10;
+            l1=l1!=NULL ? l1->next :l1;
+            l2=l2!=NULL ? l2->next :l2;
+        }
+        return l;
+    }
+};
+class Solution {
+public:
+    int lengthL(ListNode* head) {
+        int len = 0;
+        while (head != NULL) {
+            len++;
+            head = head->next;
+        }
+        return len;
+    }
+
+    void reverseLL(ListNode* head) {
+        ListNode* curr = head;
+        ListNode* prev = NULL;
+
+        while (curr != NULL) {
+            ListNode* next = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+        }
+    }
+
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        if (head == NULL || k == 1)
+            return head;
+
+        ListNode* headDummy = new ListNode(-1);
+        headDummy->next = head;
+
+        ListNode* prev = headDummy;
+        int remaining_len = lengthL(head);
+
+        while (remaining_len >= k) {
+            ListNode* tail = head;
+            for (int i = 1; i < k; i++) {
+                tail = tail->next;
+            }
+
+            ListNode* nextGroup = tail->next;
+            tail->next = NULL;
+
+            reverseLL(head);
+
+            prev->next = tail;
+            head->next = nextGroup;
+
+            prev = head;
+            head = nextGroup;
+
+            remaining_len -= k;
+        }
+
+        return headDummy->next;
     }
 };
 
