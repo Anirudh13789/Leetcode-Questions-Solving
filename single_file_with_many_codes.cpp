@@ -1760,4 +1760,76 @@ public:
         return headDummy->next;
     }
 };
-
+class Solution {
+public:
+    int maximumElementAfterDecrementingAndRearranging(vector<int>& arr) {
+        sort(arr.begin(),arr.end());
+        arr.front()=1;
+        for(int i=1;i<arr.size();i++){
+            arr[i]=min(arr[i],arr[i-1]+1);
+        }
+        return arr[arr.size()-1];
+    }
+};
+class Solution {
+public:
+    string removeOuterParentheses(string s) {
+        string res;
+        int open=0;
+        for(char c:s){
+            if(c=='(' && open++>0){
+                res+=c;
+            }
+            if(c==')' && open-->1){
+                res+=c;
+            }
+        }
+        return res;
+    }
+};
+class Solution {
+public:
+    vector<int> addToArrayForm(vector<int>& num, int k) {
+        reverse(num.begin(),num.end());
+        int i=0;
+        while(i<num.size() || k>0){
+            if(i<num.size()){
+                int sum=num[i]+(k%10);
+                num[i]=sum%10;
+                k=k/10 + sum/10;
+            }
+            else{
+                num.push_back(k%10);
+                k/=10;
+            }
+            i++;
+        }
+        reverse(num.begin(),num.end());
+        return num;
+    }
+};
+class Solution {
+public:
+    int solve(vector <int> &nums,int s,int e){
+        int ans=max(nums[s],nums[s+1]);
+        int pmax=nums[s];
+        for(int i=s+2;i<=e;i++){
+            int profit=nums[i]+pmax;
+            pmax=ans;
+            ans=max(ans,profit);
+        }
+        return ans;
+    }
+    int rob(vector<int>& nums) {
+        int n=nums.size();
+        if(n==1){
+            return nums[0];
+        }
+        else if(n==2){
+            return max(nums[0],nums[1]);
+        }
+        int op1=solve(nums,0,n-2);
+        int op2=solve(nums,1,n-1);
+        return max(op1,op2);
+    }
+};
