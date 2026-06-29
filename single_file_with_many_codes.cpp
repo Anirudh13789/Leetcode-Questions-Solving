@@ -74,7 +74,6 @@ public:
         return ans;
     }
 };
-
 class Solution {
 public:
     int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
@@ -94,7 +93,6 @@ public:
         return totalTank>=0? start:-1;
     }
 };
-
 class Solution {
 public:
     bool isPalindrome(string s) {
@@ -121,7 +119,6 @@ public:
 
     }
 };
-
 class Solution {
 public:
     bool isSubsequence(string s, string t) {
@@ -136,7 +133,6 @@ public:
 
     }
 };
-
 class Solution {
 public:
     vector<int> twoSum(vector<int>& numbers, int target) {
@@ -157,7 +153,6 @@ public:
         return{};
     }
 };
-
 class Solution {
 public:
     int maxArea(vector<int>& heights) {
@@ -181,8 +176,6 @@ public:
         return maxwater;
     }
 };
-
-
 class Solution {
 public:
     int minSubArrayLen(int target, vector<int>& nums) {
@@ -200,7 +193,6 @@ public:
         return (minLen==INT_MAX) ? 0:minLen;
     }
 };
-
 class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
@@ -214,7 +206,6 @@ public:
         return ans;
     }
 };
-
 class Solution {
 public:
     void sortColors(vector<int>& nums) {
@@ -1833,3 +1824,63 @@ public:
         return max(op1,op2);
     }
 };
+struct Car{
+    int position;
+    double time;
+};
+class Solution {
+public:
+    int carFleet(int target, vector<int>& position, vector<int>& speed) {
+        int n=position.size();
+        vector<Car> cars(n);
+        for(int i=0;i<n;i++){
+            cars[i]={position[i],(double)(target-position[i])/speed[i]};
+        }
+        sort(cars.begin(),cars.end(),[](Car &a,Car &b){
+            return a.position<b.position;
+        });
+        int fleets=0;
+        int t=n;
+        while(--t>0){
+            if(cars[t].time<cars[t-1].time){
+                fleets++;
+            }
+            else{
+                cars[t-1]=cars[t];
+            }
+        }
+        return fleets+(t==0?1:0);
+    }
+};
+class Solution {
+public:
+    int heightChecker(vector<int>& heights) {
+        vector<int> expected=heights;
+        sort(expected.begin(),expected.end());
+        int count=0;
+        for(int i=0;i<heights.size();i++){
+            if(expected[i]!=heights[i]){
+                count++;
+            }
+        }
+        return count;
+    }
+};
+// TreeNode ki cls create krne ki jagah ese hi question kr diya tha
+
+// class Solution {
+// public:
+//     bool isSameTree(TreeNode* p, TreeNode* q) {
+//         if(!p && !q){
+//             return true;
+//         }
+//         if(!p or !q){
+//             return false;
+//         }
+//         if(p->val != q->val){
+//             return false;
+//         }
+//         return isSameTree(p->left,q->left) and isSameTree(p->right,q->right);
+//     }
+// };
+
