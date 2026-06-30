@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <vector>
 #include <climits>
+#include <string>
 #include <unordered_map>
 #include <map>
 #include <numeric>
@@ -9,6 +10,7 @@
 #include <queue>
 #include <set>
 #include <cmath>
+#include <unordered_set>
 class ListNode{
 public:
     ListNode*next;
@@ -1884,3 +1886,160 @@ public:
 //     }
 // };
 
+// class Solution {
+// public:
+//     vector<string> findOcurrences(string text, string first, string second) {
+//         vector<string> ans;
+//         istringstream ss(text);
+//         string prev2,prev,word;
+//         while(ss >> word){
+//             if(prev2==first && prev==second){
+//                 ans.push_back(word);
+//             }
+//             prev2=prev;
+//             prev=word;
+//         }
+//         return ans;
+//     }
+// };
+class Solution {
+public:
+    int findJudge(int n, vector<vector<int>>& trust) {
+        if(trust.size()<n-1){
+            return -1;
+        }
+        vector<int> indegrees(n+1,0);
+        vector<int> outdegrees(n+1,0);
+
+        for(auto & relation:trust){
+            outdegrees[relation[0]]++;
+            indegrees[relation[1]]++;
+        }
+        for(int i=1;i<=n;i++){
+            if(indegrees[i]==n-1 && outdegrees[i]==0){
+                return i;
+            }
+        }
+        return -1;
+    }
+};
+class Solution {
+public:
+    int countPrimes(int n) {
+        vector<bool> isPrime(n,true);
+        vector<int> primes;
+        if(n>=0){
+            isPrime[0]=false;
+        }
+        if(n>=1){
+            isPrime[1]=false;
+        }
+        for(int i=2;i*i<n;i++){
+            if(isPrime[i]){
+                for(int j=i*i;j<=n;j+=i){
+                    isPrime[j]=false;
+                }
+            }
+        }
+        for(int i=2;i<n;i++){
+            if(isPrime[i]){
+                primes.push_back(i);
+            }
+        }
+        return primes.size();
+    }
+};
+class Solution {
+public:
+    int getNext(int n){
+        int totalsum=0;
+        while(n>0){
+            int d=n%10;
+            n=n/10;
+            totalsum+=d*d;
+        }
+        return totalsum; 
+    }
+    bool isHappy(int n) {
+        int slowrunner=n;
+        int fastrunner=getNext(n);
+        while(fastrunner!=1 && slowrunner!=fastrunner){
+            slowrunner=getNext(slowrunner);
+            fastrunner=getNext(getNext(fastrunner));
+        }
+        return fastrunner==1;
+    }
+};
+class Solution {
+public:
+    int findNthDigit(int n) {
+        long long len=1;
+        long long count=9;
+        long long start=1;
+        while(n>len*count){
+            n-=len*count;
+            len++;
+            count*=10;
+            start*=10;
+        }
+        long long number=start+(n-1)/len;
+        string s=to_string(number);
+        return s[(n-1)%len]-'0';
+    }
+};
+class Solution {
+public:
+    int distributeCandies(vector<int>& candyType) {
+        unordered_set<int> s(candyType.begin(),candyType.end());
+        return min((int)s.size(),(int)candyType.size()/2);
+    }
+};
+class Solution {
+public:
+    int findContentChildren(vector<int>& g, vector<int>& s) {
+        sort(g.begin(),g.end());
+        sort(s.begin(),s.end());
+        int i=0;
+        int j=0;
+        while(i<s.size() && j<g.size()){
+            if(s[i]>=g[j]){
+                j++;
+            }
+            i++;
+        }
+        return j;
+    }
+};
+class Solution {
+public:
+    bool lemonadeChange(vector<int>& bills) {
+        int five=0,ten=0;
+        for(int note:bills){
+            if(note==5){
+                five++;
+            }
+            else if(note==10){
+                if(five>0){
+                    ten++;
+                    five--;
+                }
+                else{
+                    return false;
+                }
+            }
+            else{
+                if(five>0 && ten>0){
+                    five--;
+                    ten--;
+                }
+                else if(five>2){
+                    five-=3;
+                }
+                else{
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+};
