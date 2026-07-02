@@ -20,6 +20,16 @@ public:
         next=NULL;
     }
 };
+class TreeNode{
+public:
+    int val;
+    TreeNode*left;
+    TreeNode*right;
+    TreeNode(int d){
+        val=d;
+        left=right=nullptr;
+    }
+};
 using namespace std;
 class Solution {
 public:
@@ -2041,5 +2051,184 @@ public:
             }
         }
         return true;
+    }
+};
+class Solution {
+public:
+    double power(double x, long long n) {
+        if (n == 0){
+            return 1;
+        }
+        double half = power(x, n / 2);
+        if (n % 2 == 0){
+            return half * half;
+        }
+        else{
+            return x * half * half;
+        }
+    }
+    double myPow(double x, int n) {
+        long long N = n;
+
+        if (N < 0) {
+            x = 1 / x;
+            N = -N;
+        }
+
+        return power(x, N);
+    }
+};
+class Solution {
+public:
+    static bool comparator(vector<int> &x,vector<int> &y){
+        return x[1]<y[1];
+    }
+    int eraseOverlapIntervals(vector<vector<int>>& intervals) {
+        sort(intervals.begin(),intervals.end(),comparator);
+
+        int pe,cs,ce,cnt=0;
+        pe=intervals[0][1];
+
+        for(int i=1;i<intervals.size();i++){
+            cs=intervals[i][0];
+            ce=intervals[i][1];
+            if(pe>cs){
+                cnt++;
+            }
+            else{
+                pe=ce;
+            }
+        }
+        return cnt;
+    } 
+};
+class Solution {
+public:
+    int trailingZeroes(int n) {
+        int ans=0;
+        for(int i=5;i<=n;i+=5){
+            int currentFactor=i;
+            while(currentFactor%5==0){
+                ans++;
+                currentFactor/=5;
+            }
+        }
+        return ans;
+    }
+};
+class Solution {
+public:
+    int ans;
+    int solve(TreeNode*root,int parent){
+        if(root==NULL){
+            return 0;
+        }
+        int left =solve(root->left,root->val);
+        int right=solve(root->right,root->val);
+        ans=max(ans,left+right);
+        return root->val==parent? max(left,right)+1 : 0;
+    }
+    int longestUnivaluePath(TreeNode* root) {
+        solve(root,-1);
+        return ans;
+    }
+};
+class Solution {
+public:
+    vector<int> pancakeSort(vector<int>& arr) {
+        vector<int> flips;
+        int n=arr.size();
+        for(int curr=n;curr>1;curr--){
+            int idx=0;
+            for(int i=0;i<curr;i++){
+                if(arr[i]==curr){
+                    idx=i;
+                    break;
+                }
+            }
+            if(idx==curr-1){
+                continue;
+            }
+            if(idx!=0){
+                reverse(arr.begin(),arr.begin()+idx+1);
+                flips.push_back(idx+1);
+            }
+            reverse(arr.begin(),arr.begin()+curr);
+            flips.push_back(curr);
+        }
+        return flips;
+        
+    }
+};
+class Solution {
+public:
+    string minRemoveToMakeValid(string s) {
+        unordered_set<int> indexesToRemove;
+        stack<int> st;
+        for(int i=0;i<s.length();i++){
+            if(s[i]=='('){
+                st.push(i);
+            }
+            if(s[i]==')'){
+                if(st.empty()){
+                    indexesToRemove.insert(i);
+                }
+                else{
+                    st.pop();
+                }
+            }
+        }
+        while(!st.empty()){
+            indexesToRemove.insert(st.top());
+            st.pop();
+        }
+        string ans="";
+        for(int i=0;i<s.length();i++){
+            if(indexesToRemove.find(i)==indexesToRemove.end()){
+                ans+=s[i];
+            }
+        }
+        return ans;
+    }
+};
+class Solution {
+public:
+    int maxProfitAssignment(vector<int>& difficulty, vector<int>& profit, vector<int>& worker) {
+        vector<pair<int, int>> infos;
+        for (int i = 0; i < difficulty.size(); i++) {
+            infos.emplace_back(difficulty[i], profit[i]);
+        }
+        sort(infos.begin(), infos.end());
+        
+        vector<pair<int, int>> maxProfitForDifficulty;
+        int maxp = 0;
+        for (auto& info : infos) {
+            int d = info.first, p = info.second;
+            maxp = max(maxp, p);
+            maxProfitForDifficulty.emplace_back(d, maxp);
+        }
+        
+        int totalProfit = 0;
+        for (int w : worker) {
+            int ind = binarySearch(maxProfitForDifficulty, w);
+            if (ind >= 0 && w >= maxProfitForDifficulty[ind].first) {
+                totalProfit += maxProfitForDifficulty[ind].second;
+            }
+        }
+        return totalProfit;
+    }
+    
+private:
+    int binarySearch(vector<pair<int, int>>& list, int target) {
+        int left = 0, right = list.size() - 1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (list[mid].first <= target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return right;
     }
 };
