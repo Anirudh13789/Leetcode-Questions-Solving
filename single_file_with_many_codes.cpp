@@ -2232,3 +2232,87 @@ private:
         return right;
     }
 };
+class Solution {
+public:
+    double findMedianSortedArrays(vector<int>& a, vector<int>& b) {
+        int n=a.size();
+        int m=b.size();
+
+        if(n>m){
+            return findMedianSortedArrays(b,a);
+        }
+        int s=0,e=n;
+        while(s<=e){
+            int mid1=(s+e)/2;
+            int mid2=(n+m+1)/2-mid1;
+
+            int aleft=(mid1-1)>=0 ? a[mid1-1]:INT_MIN;
+            int aright=(mid1<n) ? a[mid1]:INT_MAX;
+            int bleft=(mid2-1>=0) ? b[mid2-1]:INT_MIN;
+            int bright=(mid2<m)? b[mid2]:INT_MAX;
+
+            if(bleft<=aright && aleft<=bright){
+                if((n+m)%2==1){
+                    return max(aleft,bleft);
+                }
+                else{
+                    return (max(aleft,bleft)+min(aright,bright))/2.0;
+                }
+            }
+            else{
+                if(aleft>bright){
+                    e=mid1-1;
+                }
+                else{
+                    s=mid1+1;
+                }
+            }
+        }
+        return -1;
+    }
+};
+class Solution {
+public:
+    int arrangeCoins(int n) {
+        long long left=0,right=n;
+        int ans=0;
+        while(left<=right){
+            long long k=(left+right)/2;
+            long long curr=k*(k+1)/2;
+
+            if(curr<=n){
+                ans=k;
+                left=k+1;
+            }
+            else{
+                right=k-1;
+            }
+        }
+        return ans;
+    }
+};
+class Solution {
+public:
+    string largestNumber(vector<int>& nums) {
+        sort(nums.begin(), nums.end(), [](int n1, int n2) {
+            string s1 = to_string(n1);
+            string s2 = to_string(n2);
+            return s1 + s2 > s2 + s1;
+        });
+        if (nums[0] == 0) {
+            return "0";
+        }
+        string res = "";
+        for(int num : nums){
+            res += to_string(num);
+        }
+        return res;
+    }
+};
+class Solution {
+public:
+    int theMaximumAchievableX(int num, int t) {
+        return num+2*t;
+    }
+};
+
