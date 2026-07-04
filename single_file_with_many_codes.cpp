@@ -2315,4 +2315,170 @@ public:
         return num+2*t;
     }
 };
+class Solution {
+public:
+    bool isLongPressedName(string name, string typed) {
+        int np=0,tp=0;
+        while(np<name.size() && tp<typed.size()){
+            if(name[np]==typed[tp]){
+                np++;
+                tp++;
+            }
+            else if(tp>=1 && typed[tp]==typed[tp-1]){
+                tp++;
+            }
+            else{
+                return false;
+            }
+        }
+        if(np!=name.size()){
+            return false;
+        }
+        else{
+            while(tp<typed.size()){
+                if(typed[tp]!=typed[tp-1]){
+                    return false;
+                }
+                tp++;
+            }
+        }
+        return true;
+    }
+};
+class Solution {
+public:
+    string longestDiverseString(int a, int b, int c) {
+        int curra = 0, currb = 0, currc = 0;
+        int totalIterations = a + b + c;
+        string ans = "";
+
+        for (int i = 0; i < totalIterations; i++) {
+
+            if ((a >= b && a >= c && curra != 2) || (a > 0 && (currb == 2 || currc == 2))) {
+                ans += 'a';
+                a--;
+                curra++;
+                currb = 0;
+                currc = 0;
+            }
+            else if ((b >= a && b >= c && currb != 2) || (b > 0 && (curra == 2 || currc == 2))) {
+                ans += 'b';
+                b--;
+                currb++;
+                curra = 0;
+                currc = 0;
+            }
+            else if ((c >= a && c >= b && currc != 2) || (c > 0 && (curra == 2 || currb == 2))) {
+                ans += 'c';
+                c--;
+                currc++;
+                curra = 0;
+                currb = 0;
+            }
+            else {
+                break;
+            }
+        }
+
+        return ans;
+    }
+};
+class Solution {
+public:
+    bool validMountainArray(vector<int>& arr) {
+        int i=0,n=arr.size();
+        while(i+1<n && arr[i]<arr[i+1]){
+            i++;
+        }
+        if(i==0 || i==n-1){
+            return false;
+        }
+        while(i+1<n && arr[i]>arr[i+1]){
+            i++;
+        }
+        return i==n-1;
+    }
+
+};
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+        int sold=INT_MIN;
+        int held=INT_MIN;
+        int reset=0;
+        for(int price:prices){
+            int presold=sold;
+            sold=held+price;
+            held=max(held,reset-price);
+            reset=max(reset,presold);
+        }
+        return max(sold,reset);
+    }
+};
+class Solution {
+public:
+    int integerBreak(int n) {
+        if(n==2){
+            return 1;
+        }
+        if(n==3){
+            return 2;
+        }
+        int ans=1;
+        while(n>4){
+            ans=ans*3;
+            n=n-3;
+        }
+        return ans*n;
+    }
+};
+class Solution {
+public:
+    int monotoneIncreasingDigits(int n) {
+        string s = to_string(n);
+
+        int mark = s.size();
+
+        for (int i = s.size() - 1; i > 0; i--) {
+            if (s[i - 1] > s[i]) {
+                s[i - 1]--;
+                mark = i;
+            }
+        }
+
+        for (int i = mark; i < s.size(); i++)
+            s[i] = '9';
+
+        return stoi(s);
+    }
+};
+class Solution {
+public:
+    int bagOfTokensScore(vector<int>& tokens, int power) {
+        sort(tokens.begin(), tokens.end());
+
+        int i = 0, j = tokens.size() - 1;
+        int score = 0, ans = 0;
+
+        while (i <= j) {
+            if (power >= tokens[i]) {
+                power -= tokens[i];
+                score++;
+                ans = max(ans, score);
+                i++;
+            }
+            else if (score > 0) {
+                power += tokens[j];
+                score--;
+                j--;
+            }
+            else {
+                break;
+            }
+        }
+
+        return ans;
+    }
+};
+
 
