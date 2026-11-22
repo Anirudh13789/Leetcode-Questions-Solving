@@ -1,0 +1,13 @@
+#include <iostream>
+using namespace std;
+class Solution {
+public:
+    bool checkString(string s) {
+        for(int i=1;i<s.size();i++){
+            if(s[i-1]=='b' and s[i]=='a'){
+                return false;
+            }
+        }
+        return true;
+    }
+};
